@@ -28,8 +28,11 @@ app.locals.title = `${capitalized(projectName)}- Generated with Ironlauncher`;
 const index = require('./routes/index');
 app.use('/', index);
 
+/* In the lines of code above and bellow, you are telling your app to use/read the routes you have on ./routes/index and
+.routes/drones files. This is the place where you should use a prefix, on the drones, so that on the .routes/drones file
+you don't need to repeat /drones over and over again */
 const droneRoutes = require('./routes/drones')
-app.use('/', droneRoutes)
+app.use('/drones', droneRoutes)
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes
 require('./error-handling')(app);
