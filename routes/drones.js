@@ -4,7 +4,10 @@ const router = express.Router();
 // require the Drone model here
 const Drone = require("../models/Drone.model");
 
-router.get("/drones", async (req, res, next) => {
+/* Since I added a prefix to drones routes on app.js, I will delete that prefix from all the routes in this file.
+We don't need it, otherwise all routes will be /drones/drones */
+
+router.get("/", async (req, res, next) => {
   try {
     const drones = await Drone.find();
     res.render("drones/list", { drones });
@@ -13,11 +16,12 @@ router.get("/drones", async (req, res, next) => {
   }
 });
 
-router.get("/drones/create", async (req, res, next) => {
+router.get("/create", async (req, res, next) => {
+  /* Missing the indication of the folder where the view is stored. If not, it does not work */
   res.render("drones/create-form");
 });
 
-router.post("/drones/create", async (req, res, next) => {
+router.post("/create", async (req, res, next) => {
   try {
     const { name, propellers, maxSpeed } = req.body;
     await Drone.create({
@@ -32,7 +36,7 @@ router.post("/drones/create", async (req, res, next) => {
   }
 });
 
-router.get("/drones/:id/edit", async (req, res, next) => {
+router.get("/:id/edit", async (req, res, next) => {
   try {
     const { id } = req.params;
     const drone = await Drone.findById(id);
@@ -42,7 +46,7 @@ router.get("/drones/:id/edit", async (req, res, next) => {
   }
 });
 
-router.post("/drones/:id/edit", async (req, res, next) => {
+router.post("/:id/edit", async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, propellers, maxSpeed } = req.body;
@@ -57,7 +61,7 @@ router.post("/drones/:id/edit", async (req, res, next) => {
   }
 });
 
-router.post("/drones/:id/delete", async (req, res, next) => {
+router.post("/:id/delete", async (req, res, next) => {
   try {
     const { id } = req.params;
     await Drone.findByIdAndDelete(id);
@@ -68,3 +72,5 @@ router.post("/drones/:id/delete", async (req, res, next) => {
 });
 
 module.exports = router;
+
+/* Great job will all the logic on the routes. Very clear and direct code */
